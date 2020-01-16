@@ -39,12 +39,13 @@ bool SearchMatrix::isGoalState(State<Cell> state) {
 }
 
 list<State<Cell>> SearchMatrix::getAllPossibleStates(State<T> s) {
-    list<Cell> retval = new list<Cell>();
+    list<State<Cell>> retval = new list<Cell>();
     // if !end of row/col
     // add to retval
 
     //if !cost of next s == infinity
     // add to retval
+    return retval;
 }
 
 

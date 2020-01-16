@@ -26,6 +26,10 @@ Solution BFS<T>::search(Searchable<T> s) {
         queue.pop_front();
         list<State<T>> possibleStates = s.getAllPossibleStates(v);
         typename list<State<T>>::iterator it;
+        if (s.isGoalState(v)){
+            //impl getSolution(s,v)
+            return getSolution(s,v);
+        }
         for (it = possibleStates.begin(); it != possibleStates.end(); it ++){
             if (visited.find(*it) == visited.end()){
                 queue.push_back(*it);
@@ -35,11 +39,6 @@ Solution BFS<T>::search(Searchable<T> s) {
         }
 
     }
-
-
-
-
-
 }
 
 
