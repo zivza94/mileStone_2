@@ -5,7 +5,7 @@
 #ifndef MILESTONE_2_CLIENTHANDLER_H
 #define MILESTONE_2_CLIENTHANDLER_H
 
-#endif //MILESTONE_2_CLIENTHANDLER_H
+
 
 using namespace std;
 class ClientHandler {
@@ -13,3 +13,5 @@ private:
 public:
     virtual void handleClient(int clientSocket);
 };
+
+#endif //MILESTONE_2_CLIENTHANDLER_H

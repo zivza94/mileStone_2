@@ -8,21 +8,20 @@
 #include <string>
 
 using namespace std;
-template <typename T>
 class Solution {
 private:
     string path;
     int nodeEvaluated;
 public:
-    list<T> getPath();
+    string getPath();
     int getNodeEvaluated();
 };
 template  <typename T>
-int Solution<T>::getNodeEvaluated() {
+int Solution::getNodeEvaluated() {
     return nodeEvaluated;
 }
 template  <typename T>
-list<T> Solution<T>::getPath() {}
+string Solution::getPath() {}
 
 
 #endif //MILESTONE_2_SOLUTION_H

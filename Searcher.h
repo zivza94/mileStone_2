@@ -6,10 +6,11 @@
 #define MILESTONE_2_SEARCHER_H
 
 #include "Searchable.h"
+#include "Solution.h"
 
 template <typename T>
 class Searcher {
-    Solution search (Searcheable s);
+    Solution search (Searchable<T> s);
 
 };
 #endif //MILESTONE_2_SEARCHER_H
