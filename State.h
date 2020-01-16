@@ -8,16 +8,20 @@
 template< typename T>
 class State {
 private:
-    T state;
-    double cost;
-    State<T> comeFrom;
+    T _state;
+    double _cost;
+    State<T> _comeFrom;
 public:
+    State(T state, double cost, State<T> comeFrom = null):_state(state), _cost(cost), _comeFrom(comeFrom){};
     bool operator==(const State<T>);
+    double getCost() {return _cost;};
+    State<T> getFather() { return _comeFrom;};
+
 };
 
 template<typename T>
 bool State<T>::operator==(const State<T> s) {
-    return state.equals(s.state);
+    return _state.equals(s.state);
 }
 
 

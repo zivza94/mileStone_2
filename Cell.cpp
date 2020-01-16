@@ -2,4 +2,4 @@
 // Created by ziv on 16/01/2020.
 //
 
-#include "IntCell.h"
+#include "Cell.h"
