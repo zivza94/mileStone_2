@@ -10,20 +10,19 @@
 #include "Server.h"
 #include "MyTestClientHandler.h"
 #include "MySerialServer.h"
+#include "Tests.cpp"
 
 int boot::Main::main(int argc, string* argv) {
     int port = stoi(argv[0]);
     Solver<string,string>* solver = new StringReverser();
     CacheManager<string,string>* cache = new FileCacheManager();
-    ClientHandler* handler = new MyTestClientHandler<string,string>(solver, cache);
-    server_side::Server* server = new MySerialServer();
-    server->open(port, *handler);
+    //ClientHandler *handler = new MyTestClientHandler (solver, cache);
+  //  ClientHandler *handler = new MyTestClientHandler<string, string> (*solver, *cache);
+   // server_side::Server* server = new MySerialServer();
+    //server->open(port, *handler);
     //when to stop
-
-
-
-
-    
+    Tests t = Tests();
+    t.tests();
     return 0;
 
 }

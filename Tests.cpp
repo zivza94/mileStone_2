@@ -20,6 +20,8 @@ class Tests{
         }
         return;
     }
+
+public:
     void tests() {
         checkStringReverser();
     }

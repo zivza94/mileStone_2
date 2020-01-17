@@ -23,5 +23,4 @@ int Solution::getNodeEvaluated() {
 template  <typename T>
 string Solution::getPath() {}
 
-
 #endif //MILESTONE_2_SOLUTION_H
