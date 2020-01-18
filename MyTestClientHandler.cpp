@@ -4,8 +4,7 @@
 
 #include "MyTestClientHandler.h"
 
-template <typename P, typename S>
-void MyTestClientHandler<P,S>::handleClient(int clientSocket) {
+void MyTestClientHandler::handleClient(int clientSocket) {
     char buffer[1024] = {0};
     //reading from client
     int valread = read(clientSocket, buffer, 1024);

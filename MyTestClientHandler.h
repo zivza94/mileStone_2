@@ -9,16 +9,16 @@
 #include "Solver.h"
 #include "CacheManager.h"
 
-template <typename P, typename S>
-class MyTestClientHandler : public virtual ClientHandler {
+class MyTestClientHandler : public ClientHandler {
 private:
-    Solver<P,S> solver;
-    CacheManager<P,S> cm;
+    Solver<string,string>* solver;
+    CacheManager<string,string>* cm;
 public:
-    MyTestClientHandler(Solver<P,S> s ,CacheManager<P,S> cache) {
-        solver = s;
-        cm = cache;
+    MyTestClientHandler(Solver<string,string>* s ,CacheManager<string,string>* cache) {
+        this->solver = s;
+        this->cm = cache;
     }
-    void handleClient(int clientSocket);
+    void handleClient(int clientSocket) override;
+     ~MyTestClientHandler() override{}
 };
 #endif //MILESTONE_2_MYTESTCLIENTHANDLER_H

@@ -8,18 +8,29 @@
 
 #include "Server.h"
 
-class MySerialServer : public server_side::Server {
-private:
-
-    sockaddr_in address;
-    int port, socketfd;
-    ClientHandler c;
-    bool stopServer = 0;
-    void accept();
-public:
-    void open (int port,ClientHandler c);
-    void stop ();
+struct acceptInfo {
+    int port;
+    ClientHandler *c;
+    bool stopServer = false;
 };
 
+class MySerialServer : public server_side::Server {
+    private:
+        struct acceptInfo *info;
+        //sockaddr_in address;
+        //int port, socketfd;
+        //ClientHandler* c;
+        //bool stopServer = 0;
+        //void accept();
+    public:
+        MySerialServer() {
+            this->info = new acceptInfo();
+        }
 
+        void open(int port, ClientHandler *c) override ;
+
+        virtual void stop() override ;
+
+        ~MySerialServer() override {}
+    };
 #endif //MILESTONE_2_MYSERIALSERVER_H

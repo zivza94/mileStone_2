@@ -5,6 +5,8 @@
 #ifndef MILESTONE_2_STATE_H
 #define MILESTONE_2_STATE_H
 
+#include <clocale>
+
 template< typename T>
 class State {
 private:
@@ -12,8 +14,8 @@ private:
     double _cost;
     State<T> _comeFrom;
 public:
-
-    State(T state, double cost, State<T> comeFrom = null):_state(state), _cost(cost), _comeFrom(comeFrom){};
+    // LIZA- CHANGED null to NULL
+    State(T state, double cost, State<T> comeFrom = NULL):_state(state), _cost(cost), _comeFrom(comeFrom){};
     bool operator==(const State<T>);
     double getCost() {return _cost;};
     State<T> getFather() { return _comeFrom;};

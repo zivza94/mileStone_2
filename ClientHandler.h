@@ -12,9 +12,9 @@
 
 using namespace std;
 class ClientHandler {
-private:
 public:
-    virtual void handleClient(int clientSocket);
+    virtual void handleClient(int clientSocket) = 0;
+    virtual ~ClientHandler(){} ;
 };
 
 #endif //MILESTONE_2_CLIENTHANDLER_H

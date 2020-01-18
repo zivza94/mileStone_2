@@ -25,3 +25,6 @@ string FileCacheManager::getSolution(string problem) {
     fp.close();
     return retval;
 }
+
+void FileCacheManager::saveSolution(string problem, string solution) {
+}

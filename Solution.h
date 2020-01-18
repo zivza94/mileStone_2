@@ -16,11 +16,12 @@ public:
     string getPath();
     int getNodeEvaluated();
 };
+/*LIZA
 template  <typename T>
 int Solution::getNodeEvaluated() {
     return nodeEvaluated;
 }
 template  <typename T>
 string Solution::getPath() {}
-
+LIZA*/
 #endif //MILESTONE_2_SOLUTION_H
