@@ -11,12 +11,13 @@ class Cell {
 private:
     int _row;
     int _col;
-    string _value;
+    //-1 for infinty
+    double _value;
 public:
-    Cell(int row, int col,string value): _row(row), _col(col), _value(value){};
+    Cell(int row, int col,double value): _row(row), _col(col), _value(value){};
     int getRow(){ return  _row;}
     int getCol(){ return _col;}
-    string getValue(){return _value;}
+    double getValue(){return _value;}
 };
 
 
