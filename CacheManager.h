@@ -10,6 +10,7 @@
 using namespace std;
 template <typename P, typename S>
 class CacheManager {
+public:
     virtual bool isExist(P problem) = 0;
     virtual string getSolution(P problem) = 0;
     virtual void saveSolution(P problem,S solution) = 0;
