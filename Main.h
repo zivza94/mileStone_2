@@ -18,7 +18,7 @@ namespace boot {
     public:
         void main(int port) {
             Solver<string, string> *solver = new StringReverser();
-            CacheManager<string, string> *cm = new FileCacheManager();
+            CacheManager<string, string> *cm = new FileCacheManager(5);
             server_side::Server *A = new MySerialServer();
             ClientHandler *B = new MyTestClientHandler(solver, cm);
             A->open(port, B);
