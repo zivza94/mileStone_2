@@ -39,7 +39,7 @@ vector<Cell> SearchMatrix::splitLineToCells(string line, int row) {
     }
     end = line.find(',', start);
     while(end != -1) {
-        Cell c = new Cell(row, end%2,line.substr(start, end - start));
+        Cell c = new Cell(row, end%2,stod(line.substr(start, end - start)));
         start = end;
         end = line.find(',', start);
     }
