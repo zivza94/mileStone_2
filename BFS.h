@@ -11,14 +11,14 @@
 
 template <typename T>
 class BFS : public Searcher<T> {
-    Solution search (Searchable<T> s);
+    Solution search (Searchable<T> s) override;
 
 };
 template <typename T>
 Solution BFS<T>::search(Searchable<T> s) {
+    State<T> v = s.getInitialState();
     map<State<T>,bool> visited = new map<T,bool>();
     list<State<T>> queue;
-    State<T> v = s.getInitialState();
     queue.push_back(v);
 
     while(!queue.empty()){

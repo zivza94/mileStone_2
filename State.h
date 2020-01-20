@@ -14,7 +14,6 @@ private:
     double _cost;
     State<T> _comeFrom;
 public:
-    // LIZA- CHANGED null to NULL
     State(T state, double cost, State<T>* comeFrom = nullptr):_state(state), _cost(cost), _comeFrom(comeFrom){};
     bool operator==(const State<T>);
     T getState () {return _state;};

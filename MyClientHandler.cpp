@@ -1,23 +1,27 @@
 //
-// Created by liza on 16/01/2020.
+// Created by liza on 20/01/2020.
 //
 
-#include "MyTestClientHandler.h"
+#include "MyClientHandler.h"
 
-void MyTestClientHandler::handleClient(int clientSocket) {
+void MyClientHandler::handleClient(int clientSocket) {
     string problem;
-    char buffer[512];
+    char buffer[1024];
     char* space = "\n";
-    while (strcmp(buffer, "end") != 0) {
-        //reset the buffer
+    char* solution;
+    while (true) {
+        // reset the buffer
         memset(buffer, 0, 512) ;
         //reading from client
-        int valread = read(clientSocket, buffer, 512);
+        int valread = read(clientSocket, buffer, 1024);
         if (valread <= 0) {
             return;
         }
+        // check
         cout << buffer << endl;
-        //cout<< problem<<endl;
+        if (strcmp(buffer, "end") != 0) {
+
+        }
         string retStr;
         // send using the solver
         if (cm->isExist(buffer)) {

@@ -10,7 +10,7 @@
 
 template <typename T>
 class Searcher {
-    Solution search (Searchable<T> s);
+    virtual Solution search (Searchable<T> s) = 0;
 
 };
 #endif //MILESTONE_2_SEARCHER_H

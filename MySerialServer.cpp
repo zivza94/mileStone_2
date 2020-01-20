@@ -49,7 +49,7 @@ void* accept(void* args) {
 
         if (clientSocket == -1) {
             if (errno == EWOULDBLOCK) {
-                cout << "waiting for client reached to timeout" << endl;
+                cout << "waiting for client have reached to timeout" << endl;
                 exit(1);
             } else {
                 perror("Error accepting client");

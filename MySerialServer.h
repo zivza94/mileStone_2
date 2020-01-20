@@ -17,11 +17,6 @@ struct acceptInfo {
 class MySerialServer : public server_side::Server {
     private:
         struct acceptInfo *info;
-        //sockaddr_in address;
-        //int port, socketfd;
-        //ClientHandler* c;
-        //bool stopServer = 0;
-        //void accept();
     public:
         MySerialServer() {
             this->info = new acceptInfo();
