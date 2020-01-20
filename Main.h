@@ -11,6 +11,7 @@
 #include "MySerialServer.h"
 #include "MyTestClientHandler.h"
 #include "FileCacheManager.h"
+#include "MyClientHandler.h"
 
 namespace boot {
 
@@ -20,7 +21,7 @@ namespace boot {
             Solver<string, string> *solver = new StringReverser();
             CacheManager<string, string> *cm = new FileCacheManager(5);
             server_side::Server *A = new MySerialServer();
-            ClientHandler *B = new MyTestClientHandler(solver, cm);
+            ClientHandler *B = new MyClientHandler(solver, cm);
             A->open(port, B);
       //     delete(A);
             delete(B);

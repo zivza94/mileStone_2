@@ -17,7 +17,6 @@ void MyTestClientHandler::handleClient(int clientSocket) {
             return;
         }
         cout << buffer << endl;
-        //cout<< problem<<endl;
         string retStr;
         // send using the solver
         if (cm->isExist(buffer)) {

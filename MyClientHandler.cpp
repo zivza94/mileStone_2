@@ -5,34 +5,32 @@
 #include "MyClientHandler.h"
 
 void MyClientHandler::handleClient(int clientSocket) {
-    string problem;
-    char buffer[1024];
-    char* space = "\n";
+    string problem = "";
+    char buffer[512];
     char* solution;
     while (true) {
         // reset the buffer
         memset(buffer, 0, 512) ;
         //reading from client
-        int valread = read(clientSocket, buffer, 1024);
+        int valread = read(clientSocket, buffer, 512);
         if (valread <= 0) {
             return;
         }
         // check
         cout << buffer << endl;
-        if (strcmp(buffer, "end") != 0) {
-
+        if (strcmp(buffer, "end") == 0) {
+            break;
         }
-        string retStr;
-        // send using the solver
-        if (cm->isExist(buffer)) {
-            retStr = cm->getSolution(buffer);
-        } else {
-            retStr = solver->solve(buffer);
-            cm->saveSolution(buffer, retStr);
-        }
-        //writing back to client
-        send(clientSocket, retStr.c_str(), retStr.length(), 0);
-        send(clientSocket, space, 2, 0);
-
+        problem += buffer;
+        problem += '\n';
     }
+    string retStr;
+    if (cm->isExist(problem)) {
+        retStr = cm->getSolution(problem);
+    } else {
+        retStr = solver->solve(problem);
+        cm->saveSolution(problem, retStr);
+    }
+    //writing to the client the solution
+    send(clientSocket, retStr.c_str(), retStr.length(), 0);
 }

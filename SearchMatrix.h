@@ -20,8 +20,8 @@ class SearchMatrix : public Searchable<Cell> {
 private:
     int _size;
     vector<vector<Cell>> _mat;
-    State<Cell> _initState;
-    State<Cell> _goalState;
+    State<Cell>* _initState;
+    State<Cell>* _goalState;
     vector<Cell> splitLineToCells(string, int row);
 public:
     SearchMatrix(list<string> mat, string startCell, string endCell);
