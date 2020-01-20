@@ -18,6 +18,10 @@ public:
     int getRow(){ return  _row;}
     int getCol(){ return _col;}
     double getValue(){return _value;}
+    bool operator==(Cell c) {
+        return (_row==c.getRow()) &&( _col==c.getCol())&&(_value==c.getValue());
+    }
+    virtual ~Cell(){};
 };
 
 

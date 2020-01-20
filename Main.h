@@ -11,6 +11,7 @@
 #include "MySerialServer.h"
 #include "MyTestClientHandler.h"
 #include "FileCacheManager.h"
+#include "SearchMatrix.h"
 
 namespace boot {
 
