@@ -27,13 +27,12 @@ string BFS<T>::search(Searchable<T>* s) {
     while(!queue.empty()){
         v = queue.front();
         queue.pop_front();
-
-
+        // if we found the end path
         if (s->isGoalState(*v)){
             //impl getSolution(s,v)
             return this->getSolution(s,v);
         }
-        typename list<State<T>*>::iterator it;
+        //typename list<State<T>*>::iterator it;
         list<State<T>*> possibleStates = s->getAllPossibleStates(v);
         while(!possibleStates.empty()){
             State<T>* state = possibleStates.front();
@@ -47,22 +46,7 @@ string BFS<T>::search(Searchable<T>* s) {
                 state->setCost(v->getCost() + state->getState()->getValue());
             }
         }
-        /*
-        for (it = possibleStates.begin(); it != possibleStates.end(); it ++){
-            State<T>* sta = *it;
-            //T stateT = sta->getState();
-            bool visit = visited.find(sta) == visited.end();
-            if (visit){
-                queue.push_back(sta);
-                //visited.insert(std::pair<T,bool>(stateT,true));
-                visited[sta] = true;
-
-                sta->setComeFrom(v);
-            }
-        }*/
-
     }
 }
-
 
 #endif //MILESTONE_2_BFS_H

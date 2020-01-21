@@ -20,7 +20,7 @@ string SearchAlgorithms<T>::getSolution(Searchable<T>* s,State<T>* goalState) {
     list<string> path;
     string answer;
     State<T>* state = goalState;
-    while (!(state == s->getInitialState())){
+    while ((state != s->getInitialState())){
         State<T>* comeFrom = state->getComeFrom();
         int ansRow = comeFrom->getState()->getRow();
         int ansCol = comeFrom->getState()->getCol();

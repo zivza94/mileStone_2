@@ -8,11 +8,12 @@
 #include "Searcher.h"
 #include "Solution.h"
 #include <map>
+#include <stack>
+#include <iterator>
 
 template <typename T>
 class DFS : public Searcher<T> {
-    Solution search (Searchable<T> s) override;
-
+    string search (Searchable<T>* s) override;
 };
 
 

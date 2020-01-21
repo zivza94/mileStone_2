@@ -13,18 +13,31 @@
 #include "FileCacheManager.h"
 #include "SearchMatrix.h"
 #include "MyClientHandler.h"
+#include "SolverQA.h"
 
 namespace boot {
-
+    void firstCheck(int port) {
+        Solver<string, string> *solver = new StringReverser();
+        CacheManager<string, string> *cm = new FileCacheManager(5);
+        server_side::Server *A = new MySerialServer();
+        ClientHandler *B = new MyClientHandler(solver, cm);
+        A->open(port, B);
+        delete(A);
+        delete(B);
+    }
     class Main {
     public:
         void main(int port) {
-            Solver<string, string> *solver = new StringReverser();
+            // Check program
+           // firstCheck(port);
+
+            // Real program
+            Solver<string, string> *solver = new SolverQA();
             CacheManager<string, string> *cm = new FileCacheManager(5);
             server_side::Server *A = new MySerialServer();
             ClientHandler *B = new MyClientHandler(solver, cm);
             A->open(port, B);
-      //     delete(A);
+            delete(A);
             delete(B);
 
         }

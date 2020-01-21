@@ -13,6 +13,7 @@ private:
     T _state;
     double _cost;
     State<T>* _comeFrom;
+    bool visited = false;
 public:
     State(T state, double cost, State<T>* comeFrom = NULL):_state(state), _cost(cost), _comeFrom(comeFrom){};
     bool operator==(const State<T>);
