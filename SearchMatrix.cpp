@@ -3,8 +3,15 @@
 //
 #include "SearchMatrix.h"
 
-vector<Cell> SearchMatrix::splitLineToCells(string line, int row) {
-    vector<Cell> retval;
+
+State<Cell*>* SearchMatrix::getState(State<Cell*>* state,Cell* cell) {
+    if (state == NULL){
+        state = new State<Cell*>(cell,0);
+    }
+    return state;
+}
+vector<pair<Cell*,State<Cell*>*>> SearchMatrix::splitLineToCells(string line, int row) {
+    vector<pair<Cell*,State<Cell*>*>> retval;
     int start = 0;
     int end = 0;
     if(line[line.size() - 1] != ','){
@@ -13,10 +20,11 @@ vector<Cell> SearchMatrix::splitLineToCells(string line, int row) {
     end = line.find(',', start);
     while(end != -1) {
         Cell* c = new Cell(row, end/2,stod(line.substr(start, end - start)));
-        retval.push_back(*c);
+        retval.push_back(pair<Cell*,State<Cell*>*>(c,NULL));
         start = end + 1;
         end = line.find(',', start);
     }
+    return retval;
 }
 SearchMatrix::SearchMatrix(string problem) {
     // split the problem to ,mat, start and end
@@ -30,8 +38,8 @@ SearchMatrix::SearchMatrix(string problem) {
     //split the mat to cells with cost.
     _size = mat.size();
     int n = 0;
-    for (n = 0; n< mat.size(); n++){
-        vector<Cell> rowList = splitLineToCells(mat.front(), n);
+    for (n = 0; n< _size; n++){
+        vector<pair<Cell*,State<Cell*>*>> rowList = splitLineToCells(mat.front(), n);
         if( _size != rowList.size()){
             cout<< "invalid matrix, not N * N";
             exit(1);
@@ -45,59 +53,71 @@ SearchMatrix::SearchMatrix(string problem) {
     //split the string to 2 ints
     row = startCell.substr(0,startCell.find(','));
     int startRow = stoi(row);
-    col = startCell.substr(startCell.find(','));
+    col = startCell.substr(startCell.find(',') + 1);
     int startCol = stoi(col);
-    Cell start = _mat.at(startRow).at(startCol);
-    _initState = new State<Cell>(start,start.getValue());
+    Cell* start = _mat.at(startRow).at(startCol).first;
+    _initState = new State<Cell*>(start,0);
+    _mat.at(startRow).at(startCol).second = _initState;
     //goalCell = endCell -->> cell
     //split the string to 2 ints
     row = endCell.substr(0,endCell.find(','));
     int endRow = stoi(row);
-    col = endCell.substr(endCell.find(','));
+    col = endCell.substr(endCell.find(',') + 1);
     int endCol = stoi(col);
-    Cell end = _mat.at(endRow).at(endCol);
-    _goalState = new State<Cell>(end,end.getValue());
+    Cell* end = _mat.at(endRow).at(endCol).first;
+    _goalState = new State<Cell*>(end,end->getValue());
+    _mat.at(startRow).at(startCol).second = _goalState;
 
 
 
 }
-State<Cell>* SearchMatrix::getInitialState() {
+State<Cell*>* SearchMatrix::getInitialState() {
     return _initState;
 }
 
-bool SearchMatrix::isGoalState(State<Cell> state) {
+bool SearchMatrix::isGoalState(State<Cell*> state) {
     return *_goalState == state;
 }
 
 
-list<State<Cell>*> SearchMatrix::getAllPossibleStates(State<Cell> s) {
-list<State<Cell>*> retval;
-// if !end of row/col
-int row = s.getState().getRow();
-int col = s.getState().getCol();
-State<Cell>* possibleState;
-//row +1, col
-if (row +1 < _size && _mat.at(row+1).at(col).getValue()>-1){
-Cell c = _mat.at(row +1).at(col);
-retval.push_back(new State<Cell>(c,s.getCost() + c.getValue(),&s));
-}
-//row - 1, col
-if (row - 1 > 0 && _mat.at(row -1).at(col).getValue()>-1){
-Cell c = _mat.at(row  -1).at(col);
-retval.push_back(new State<Cell>(c,s.getCost() + c.getValue(),&s));
-}
-// row, col + 1
-if (col + 1 < _size && _mat.at(row).at(col + 1).getValue()>-1){
-Cell c = _mat.at(row).at(col + 1);
-retval.push_back(new State<Cell>(c,s.getCost() + c.getValue(),&s));
-}
-// row, col - 1
-if (col - 1 > 0 && _mat.at(row).at(col - 1).getValue()>-1){
-Cell c = _mat.at(row).at(col - 1);
-retval.push_back(new State<Cell>(c,s.getCost() + c.getValue(),&s));
-}
-
-return retval;
+list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
+    list<State<Cell*>*> retval;
+    // if !end of row/col
+    int row = s->getState()->getRow();
+    int col = s->getState()->getCol();
+    State<Cell>* possibleState;
+    //row +1, col
+    if (row +1 < _size && _mat.at(row+1).at(col).first->getValue()>-1){
+        Cell* c = _mat.at(row +1).at(col).first;
+        State<Cell*>* state = getState(_mat.at(row +1).at(col).second, c);
+        _mat.at(row+1).at(col).second = state;
+        retval.push_back(state);
+    }
+    //row - 1, col
+    if (row - 1 > 0 && _mat.at(row -1).at(col).first->getValue()>-1){
+        Cell* c = _mat.at(row  -1).at(col).first;
+        State<Cell*>* state = getState(_mat.at(row -1).at(col).second, c);
+        _mat.at(row-1).at(col).second = state;
+        retval.push_back(state);
+        //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
+    }
+    // row, col + 1
+    if (col + 1 < _size && _mat.at(row).at(col + 1).first->getValue()>-1){
+        Cell* c = _mat.at(row).at(col + 1).first;
+        State<Cell*>* state = getState(_mat.at(row).at(col+1).second, c);
+        _mat.at(row).at(col+1).second = state;
+        retval.push_back(state);
+        //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
+    }
+    // row, col - 1
+    if (col - 1 > 0 && _mat.at(row).at(col - 1).first->getValue()>-1){
+        Cell* c = _mat.at(row).at(col - 1).first;
+        State<Cell*>* state = getState(_mat.at(row).at(col-1).second, c);
+        _mat.at(row).at(col-1).second = state;
+        retval.push_back(state);
+        //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
+    }
+    return retval;
 }
 
 list<string> SearchMatrix::splitProblemToMatrix(string problem) {

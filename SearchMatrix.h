@@ -17,20 +17,21 @@
 #include "State.h"
 
 using namespace std;
-class SearchMatrix : public Searchable<Cell> {
+class SearchMatrix : public Searchable<Cell*> {
 private:
     int _size;
-    vector<vector<Cell>> _mat;
-    State<Cell>* _initState;
-    State<Cell>* _goalState;
+    vector<vector<pair<Cell*,State<Cell*>*>>> _mat;
+    State<Cell*>* _initState;
+    State<Cell*>* _goalState;
 
-    vector<Cell> splitLineToCells(string, int row);
+    vector<pair<Cell*,State<Cell*>*>> splitLineToCells(string, int row);
     list<string> splitProblemToMatrix(string problem);
+    State<Cell*>* getState(State<Cell*>*,Cell*);
 public:
     SearchMatrix(string problem);
-    State<Cell>* getInitialState();
-    bool isGoalState(State<Cell> state);
-    list<State<Cell>*> getAllPossibleStates(State<Cell> s);
+    State<Cell*>* getInitialState();
+    bool isGoalState(State<Cell*> state);
+    list<State<Cell*>*> getAllPossibleStates(State<Cell*>* s);
      ~SearchMatrix();
 };
 

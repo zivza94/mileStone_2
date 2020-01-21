@@ -6,37 +6,60 @@
 #define MILESTONE_2_BFS_H
 
 #include <map>
+#include <unordered_map>
 #include "Solution.h"
 #include "Searcher.h"
-
+#include "SearchAlgorithms.h"
 template <typename T>
-class BFS : public Searcher<T> {
-    Solution search (Searchable<T> s) override;
+class BFS : public SearchAlgorithms<T> {
+public:
+    string search (Searchable<T>* s) override;
+
 
 };
 template <typename T>
-Solution BFS<T>::search(Searchable<T> s) {
-    State<T> v = s.getInitialState();
-    map<State<T>,bool> visited = new map<T,bool>();
-    list<State<T>> queue;
+string BFS<T>::search(Searchable<T>* s) {
+    State<T>* v = s->getInitialState();
+    map<State<T>*,bool> visited;
+    list<State<T>*> queue;
     queue.push_back(v);
 
     while(!queue.empty()){
         v = queue.front();
         queue.pop_front();
-        list<State<T>> possibleStates = s.getAllPossibleStates(v);
-        typename list<State<T>>::iterator it;
-        if (s.isGoalState(v)){
+
+
+        if (s->isGoalState(*v)){
             //impl getSolution(s,v)
-            return getSolution(s,v);
+            return this->getSolution(s,v);
         }
-        for (it = possibleStates.begin(); it != possibleStates.end(); it ++){
-            if (visited.find(*it) == visited.end()){
-                queue.push_back(*it);
-                visited[*it] = true;
-                *it.setFather(v);
+        typename list<State<T>*>::iterator it;
+        list<State<T>*> possibleStates = s->getAllPossibleStates(v);
+        while(!possibleStates.empty()){
+            State<T>* state = possibleStates.front();
+            possibleStates.pop_front();
+            bool visit = !(visited.find(state) == visited.end());
+            if (!visit){
+                queue.push_back(state);
+                //visited.insert(std::pair<T,bool>(stateT,true));
+                visited[state] = true;
+                state->setComeFrom(v);
+                state->setCost(v->getCost() + state->getState()->getValue());
             }
         }
+        /*
+        for (it = possibleStates.begin(); it != possibleStates.end(); it ++){
+            State<T>* sta = *it;
+            //T stateT = sta->getState();
+            bool visit = visited.find(sta) == visited.end();
+            if (visit){
+                queue.push_back(sta);
+                //visited.insert(std::pair<T,bool>(stateT,true));
+                visited[sta] = true;
+
+                sta->setComeFrom(v);
+            }
+        }*/
 
     }
 }
