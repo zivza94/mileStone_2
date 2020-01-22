@@ -14,15 +14,18 @@ vector<pair<Cell*,State<Cell*>*>> SearchMatrix::splitLineToCells(string line, in
     vector<pair<Cell*,State<Cell*>*>> retval;
     int start = 0;
     int end = 0;
+    int col = 0;
     if(line[line.size() - 1] != ','){
         line += ",";
     }
     end = line.find(',', start);
     while(end != -1) {
-        Cell* c = new Cell(row, end/2,stod(line.substr(start, end - start)));
+
+        Cell* c = new Cell(row, col,stod(line.substr(start, end - start)));
         retval.push_back(pair<Cell*,State<Cell*>*>(c,NULL));
         start = end + 1;
         end = line.find(',', start);
+        col++;
     }
     return retval;
 }
@@ -66,7 +69,7 @@ SearchMatrix::SearchMatrix(string problem) {
     int endCol = stoi(col);
     Cell* end = _mat.at(endRow).at(endCol).first;
     _goalState = new State<Cell*>(end,end->getValue());
-    _mat.at(startRow).at(startCol).second = _goalState;
+    _mat.at(endRow).at(endCol).second = _goalState;
 
 
 
@@ -87,14 +90,14 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
     int col = s->getState()->getCol();
     State<Cell>* possibleState;
     //row +1, col
-    if (row +1 < _size && _mat.at(row+1).at(col).first->getValue()>-1){
+    if (row +1 < _size && col < _size && col >=0 && _mat.at(row+1).at(col).first->getValue()>-1){
         Cell* c = _mat.at(row +1).at(col).first;
         State<Cell*>* state = getState(_mat.at(row +1).at(col).second, c);
         _mat.at(row+1).at(col).second = state;
         retval.push_back(state);
     }
     //row - 1, col
-    if (row - 1 > 0 && _mat.at(row -1).at(col).first->getValue()>-1){
+    if (row - 1 >= 0 && col < _size && col >=0 &&_mat.at(row -1).at(col).first->getValue()>-1){
         Cell* c = _mat.at(row  -1).at(col).first;
         State<Cell*>* state = getState(_mat.at(row -1).at(col).second, c);
         _mat.at(row-1).at(col).second = state;
@@ -102,7 +105,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
     }
     // row, col + 1
-    if (col + 1 < _size && _mat.at(row).at(col + 1).first->getValue()>-1){
+    if (col + 1 < _size && row < _size && row >= 0 && _mat.at(row).at(col + 1).first->getValue()>-1){
         Cell* c = _mat.at(row).at(col + 1).first;
         State<Cell*>* state = getState(_mat.at(row).at(col+1).second, c);
         _mat.at(row).at(col+1).second = state;
@@ -110,7 +113,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
     }
     // row, col - 1
-    if (col - 1 > 0 && _mat.at(row).at(col - 1).first->getValue()>-1){
+    if (col - 1 >= 0 && row < _size && row >= 0 &&_mat.at(row).at(col - 1).first->getValue()>-1){
         Cell* c = _mat.at(row).at(col - 1).first;
         State<Cell*>* state = getState(_mat.at(row).at(col-1).second, c);
         _mat.at(row).at(col-1).second = state;
