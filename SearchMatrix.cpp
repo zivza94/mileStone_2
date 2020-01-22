@@ -59,7 +59,7 @@ SearchMatrix::SearchMatrix(string problem) {
     col = startCell.substr(startCell.find(',') + 1);
     int startCol = stoi(col);
     Cell* start = _mat.at(startRow).at(startCol).first;
-    _initState = new State<Cell*>(start,0);
+    _initState = new State<Cell*>(start,start->getValue());
     _mat.at(startRow).at(startCol).second = _initState;
     //goalCell = endCell -->> cell
     //split the string to 2 ints
