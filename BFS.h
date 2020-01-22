@@ -10,6 +10,7 @@
 #include "Solution.h"
 #include "Searcher.h"
 #include "SearchAlgorithms.h"
+
 template <typename T>
 class BFS : public SearchAlgorithms<T> {
 public:

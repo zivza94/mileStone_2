@@ -130,7 +130,7 @@ list<string> SearchMatrix::splitProblemToMatrix(string problem) {
             i =j + 1;
         }
     }
-    retval.push_back(problem.substr(i));
+    //retval.push_back(problem.substr(i));
     return retval;
 }
 

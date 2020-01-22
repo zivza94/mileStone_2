@@ -24,8 +24,8 @@ class MySerialServer : public server_side::Server {
 
         void open(int port, ClientHandler *c) override ;
 
-        virtual void stop() override ;
+        void stop() override ;
 
         ~MySerialServer() override {}
-    };
+};
 #endif //MILESTONE_2_MYSERIALSERVER_H

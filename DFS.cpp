@@ -4,37 +4,6 @@
 
 #include "DFS.h"
 
-enum Colored {
-    grey,
-    black
-};
-template <typename T>
-string DFS<T>::search(Searchable<T>* s) {
-    map<State<T>*, bool> visited = new map<T*, bool>();
-    stack <State<T>*> stack;
-    State<T>* v = s->getInitialState();
-    stack.push(v);
-    while (!stack.empty()) {
-        v = stack.top();
-        stack.pop();
-        // if we found the end path
-        if (s->isGoalState(*v)) {
-            return this->getSolution(s, v);
-        }
-        list<State<T> *> possibleStates = s->getAllPossibleStates(v);
-        while (!possibleStates.empty()) {
-            State<T> *state = possibleStates.front();
-            possibleStates.pop_front();
-            bool visit = !(visited.find(state) == visited.end());
-            if (!visit) {
-                stack.push(state);
-                visited[state] = true;
-                state->setComeFrom(v);
-                state->setCost(v->getCost() + state->getState()->getValue());
-            }
-        }
-    }
-}
 
 /*
     map<State<T>*,Colored> color = new map<T,Colored >();
