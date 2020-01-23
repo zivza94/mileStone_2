@@ -11,7 +11,8 @@ template <typename T>
 class Searchable {
 public:
     virtual State<T>* getInitialState() = 0;
-    virtual bool isGoalState(State<T> state) = 0;
+    virtual bool isGoalState(State<T>* state) = 0;
     virtual list<State<T>*> getAllPossibleStates(State<T>* s) = 0;
+    virtual int getHeuristicSearch(State<T>* state) = 0;
 };
 #endif //MILESTONE_2_SEARCHABLE_H

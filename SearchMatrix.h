@@ -30,8 +30,9 @@ private:
 public:
     SearchMatrix(string problem);
     State<Cell*>* getInitialState();
-    bool isGoalState(State<Cell*> state);
+    bool isGoalState(State<Cell*>* state);
     list<State<Cell*>*> getAllPossibleStates(State<Cell*>* s);
+    int getHeuristicSearch(State<Cell*>* state);
      ~SearchMatrix();
 };
 
