@@ -31,12 +31,15 @@ string BestFS<T>::search(Searchable<T>* s) {
     open.push(v);
     while(!open.empty()){
         v = open.top();
+        // remove the best state from open and transfer him to close
         open.pop();
+        closed.add(v);
         // if we found the end path
         if (s->isGoalState(v)){
             //impl getSolution(s,v)
             return this->getSolution(s,v);
         }
+        // get all the neighbors of v
         list<State<T>*> possibleStates = s->getAllPossibleStates(v);
         while(!possibleStates.empty()){
             State<T>* state = possibleStates.front();
