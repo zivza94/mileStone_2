@@ -9,6 +9,7 @@
 
 template <typename T>
 class CostComperator {
+public:
     bool operator()(const State<T> a, const State<T> b) {
         return a.getCost() > b.getCost();
     }

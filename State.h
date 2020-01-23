@@ -21,7 +21,7 @@ public:
     T getState () {return _state;};
     int getCost() {return _cost;};
     State<T>* getComeFrom() { return _comeFrom;};
-    int getHeuristic();
+    int getHeuristic(){ return _heuristic;};
 
     //setters
     void setState(T state) {_state = state;};

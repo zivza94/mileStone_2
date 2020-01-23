@@ -65,18 +65,24 @@ void AStar<T>::removeFromClose(State<T>* state,vector<State<T>*> close){
 
 template<typename T>
 string AStar<T>::search(Searchable<T> *s) {
+    int flag = 1;
     priority_queue <State<T>*, vector<State<T>*>, DistanceComperator> openQueue;
     vector<State<T>*> closeQueue;
     State<T>* start = s->getInitialState();
     openQueue.push(start);
     while(!openQueue.empty()){
+
         State<T>* state = openQueue.top();
+        this->evaluated++;
+        openQueue.pop();
         if(s->isGoalState(state)){
             return this->getSolution(s, state);
         }
         list<State<T>*> possibleStates = s->getAllPossibleStates(state);
         while(!possibleStates.empty()){
             State<T>* v = possibleStates.front();
+
+            possibleStates.pop_front();
             int currentCost = state->getCost() + v->getState()->getValue();
             if(isOpen(v,openQueue)){
                 if(v->getCost() <= currentCost){
@@ -89,12 +95,19 @@ string AStar<T>::search(Searchable<T> *s) {
                 removeFromClose(v,closeQueue);
                 openQueue.push(v);
             } else {
+                flag = 1;
+                v->setCost(currentCost);
+                v->setComeFrom(state);
                 openQueue.push(v);
             }
-            v->setCost(currentCost);
-            v->setComeFrom(state);
+            if(flag == 1) {
+                flag = 0;
+            } else {
+                v->setCost(currentCost);
+                v->setComeFrom(state);
+            }
         }
-        openQueue.pop();
+
         closeQueue.push_back(state);
     }
 }

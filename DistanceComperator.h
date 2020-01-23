@@ -9,10 +9,11 @@
 #include "Cell.h"
 #include "State.h"
 class DistanceComperator {
+public:
     bool operator()(State<Cell*>* state1,State<Cell*>* state2){
         int f1 = state1->getCost() + state1->getHeuristic();
         int f2 = state2->getCost() + state2->getHeuristic();
-        return f1 < f2;
+        return f1 > f2;
     }
 };
 

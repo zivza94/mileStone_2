@@ -9,9 +9,12 @@
 
 template <typename T>
 class SearchAlgorithms: public Searcher<T> {
+protected:
+    int evaluated = 0;
 public:
     virtual string search (Searchable<T>* s) = 0;
     virtual string getSolution(Searchable<T>* s,State<T>* goalState);
+    virtual int getEvaluated(){return evaluated;};
 
 };
 
@@ -38,13 +41,12 @@ string SearchAlgorithms<T>::getSolution(Searchable<T>* s,State<T>* goalState) {
         state = comeFrom;
 
     }
-    int evaluated = 0;
     while (!path.empty()){
         answer += path.front();
         path.pop_front();
-        evaluated++;
+
     }
-    answer += to_string(evaluated);
+
     return answer;
 }
 

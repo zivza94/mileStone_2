@@ -25,6 +25,7 @@ string DFS<T>::search(Searchable<T>* s) {
     State<T>* v = s->getInitialState();
     stack.push(v);
     while (!stack.empty()) {
+        this->evaluated++;
         v = stack.top();
         stack.pop();
         // if we found the end path

@@ -29,7 +29,7 @@ vector<pair<Cell*,State<Cell*>*>> SearchMatrix::splitLineToCells(string line, in
 
         Cell* c = new Cell(row, col,stod(line.substr(start, end - start)));
         retval.push_back(pair<Cell*,State<Cell*>*>(c,NULL));
-        retval.back().second->setHeuristic(getHeuristicSearch(retval.back().second));
+        //retval.back().second->setHeuristic(getHeuristicSearch(retval.back().second));
         start = end + 1;
         end = line.find(',', start);
         col++;
@@ -44,6 +44,21 @@ SearchMatrix::SearchMatrix(string problem) {
     string startCell = mat.back();
     mat.pop_back();
 
+
+
+
+    //split the mat to cells with cost.
+    _size = mat.size();
+    int n = 0;
+    for (n = 0; n< _size; n++){
+        vector<pair<Cell*,State<Cell*>*>> rowList = splitLineToCells(mat.front(), n);
+        if( _size != rowList.size()){
+            cout<< "invalid matrix, not N * N";
+            exit(1);
+        }
+        mat.pop_front();
+        _mat.push_back(rowList);
+    }
 
     string row;
     string col;
@@ -68,18 +83,15 @@ SearchMatrix::SearchMatrix(string problem) {
     _initState->setHeuristic(getHeuristicSearch(_initState));
     _mat.at(startRow).at(startCol).second = _initState;
 
-    //split the mat to cells with cost.
-    _size = mat.size();
-    int n = 0;
-    for (n = 0; n< _size; n++){
-        vector<pair<Cell*,State<Cell*>*>> rowList = splitLineToCells(mat.front(), n);
-        if( _size != rowList.size()){
-            cout<< "invalid matrix, not N * N";
-            exit(1);
+    //update the heuristic on the map
+    /*int i;
+    int j;
+    for (i = 0; i<_size; i++){
+        for (j = 0; j < _size; j++){
+            _mat[i][j].second->setHeuristic(getHeuristicSearch(_mat[i][j].second));
         }
-        mat.pop_front();
-        _mat.push_back(rowList);
-    }
+    }*/
+
 
 
 
@@ -92,7 +104,7 @@ State<Cell*>* SearchMatrix::getInitialState() {
 }
 
 bool SearchMatrix::isGoalState(State<Cell*>* state) {
-    return *_goalState == *state;
+    return _goalState == state;
 }
 
 
@@ -107,6 +119,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         Cell* c = _mat.at(row +1).at(col).first;
         State<Cell*>* state = getState(_mat.at(row +1).at(col).second, c);
         _mat.at(row+1).at(col).second = state;
+        _mat[row + 1][col].second->setHeuristic(getHeuristicSearch(_mat[row + 1][col].second));
         retval.push_back(state);
     }
     //row - 1, col
@@ -114,6 +127,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         Cell* c = _mat.at(row  -1).at(col).first;
         State<Cell*>* state = getState(_mat.at(row -1).at(col).second, c);
         _mat.at(row-1).at(col).second = state;
+        _mat[row - 1][col].second->setHeuristic(getHeuristicSearch(_mat[row - 1][col].second));
         retval.push_back(state);
         //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
     }
@@ -122,6 +136,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         Cell* c = _mat.at(row).at(col + 1).first;
         State<Cell*>* state = getState(_mat.at(row).at(col+1).second, c);
         _mat.at(row).at(col+1).second = state;
+        _mat[row][col + 1].second->setHeuristic(getHeuristicSearch(_mat[row][col + 1].second));
         retval.push_back(state);
         //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
     }
@@ -130,6 +145,7 @@ list<State<Cell*>*> SearchMatrix::getAllPossibleStates(State<Cell*>* s) {
         Cell* c = _mat.at(row).at(col - 1).first;
         State<Cell*>* state = getState(_mat.at(row).at(col-1).second, c);
         _mat.at(row).at(col-1).second = state;
+        _mat[row][col - 1].second->setHeuristic(getHeuristicSearch(_mat[row][col - 1].second));
         retval.push_back(state);
         //retval.push_back(new State<Cell*>(c,s->getCost() + c->getValue()));
     }

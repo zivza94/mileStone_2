@@ -26,6 +26,7 @@ string BFS<T>::search(Searchable<T>* s) {
     queue.push_back(v);
 
     while(!queue.empty()){
+        this->evaluated++;
         v = queue.front();
         queue.pop_front();
         // if we found the end path
@@ -40,6 +41,7 @@ string BFS<T>::search(Searchable<T>* s) {
             possibleStates.pop_front();
             bool visit = !(visited.find(state) == visited.end());
             if (!visit){
+
                 queue.push_back(state);
                 //visited.insert(std::pair<T,bool>(stateT,true));
                 visited[state] = true;

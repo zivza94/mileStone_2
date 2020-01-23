@@ -12,6 +12,7 @@ template <typename T>
 class Searcher {
 public:
     virtual string search (Searchable<T>* s) = 0;
+    virtual int getEvaluated() = 0;
 
 };
 #endif //MILESTONE_2_SEARCHER_H
