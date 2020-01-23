@@ -10,7 +10,7 @@
 #include "Server.h"
 #include <thread>
 
-struct acceptInfo {
+struct acceptInfo1 {
     int port;
     ClientHandler *c;
     bool stopServer = false;
@@ -20,10 +20,12 @@ struct acceptInfo {
 
 class MyParallelServer : public server_side::Server {
 private:
-    struct acceptInfo *info;
+    struct acceptInfo1 *info;
+    void* acceptClients(void* args);
 public:
     MyParallelServer() {
-        this->info = new acceptInfo();
+        this->info = new acceptInfo1();
+
     }
 
     void open(int port, ClientHandler *c) override ;

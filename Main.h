@@ -14,6 +14,7 @@
 #include "SearchMatrix.h"
 #include "MyClientHandler.h"
 #include "SolverQA.h"
+#include "MyParallelServer.h"
 
 namespace boot {
     void firstCheck(int port) {
@@ -34,7 +35,7 @@ namespace boot {
             // Real program
             Solver<string, string> *solver = new SolverQA();
             CacheManager<string, string> *cm = new FileCacheManager(5);
-            server_side::Server *A = new MySerialServer();
+            server_side::Server *A = new MyParallelServer();
             ClientHandler *B = new MyClientHandler(solver, cm);
             A->open(port, B);
             delete(A);

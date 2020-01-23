@@ -4,11 +4,9 @@
 
 #include "MyParallelServer.h"
 
-// 2 minuets maximum waiting for client to connect
-const int seconds_till_time_out = 120;
-/*
-void* accept(void* args) {
-    struct acceptInfo *info = (acceptInfo*) args;
+const int seconds_till_time_out = 30;
+void* MyParallelServer::acceptClients(void* args) {
+    struct acceptInfo1 *info = (acceptInfo1*) args;
     sockaddr_in address;
     //create socket
     int socketfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -50,30 +48,32 @@ void* accept(void* args) {
 
         if (clientSocket == -1) {
             if (errno == EWOULDBLOCK) {
+                stop();
                 cout << "waiting for client have reached to timeout" << endl;
-                exit(1);
+                break;
             } else {
                 perror("Error accepting client");
                 exit(1);
             }
         }
         // handle the discussion with the client - send/recv
-        info->c->handleClient(clientSocket);
+        std::thread clientThread(&ClientHandler::handleClient,info->c,clientSocket);
+        clientThread.detach();
+        //clientThread.join();
+        //cout<<"thread joined"<<endl;
+        //info->c->handleClient(clientSocket);
     }
 }
 void MyParallelServer::open(int port, ClientHandler *clientHandler) {
     // add the parameters for sending to the out side function accept
     this->info->port = port;
     this->info->c = clientHandler;
-    pthread_t t;
-    pthread_create(&t, nullptr, accept, this->info);
-    //pthread_detach(t);
-    void *status;
-    pthread_join(t, &status);
+    std:thread t(&MyParallelServer::acceptClients, MyParallelServer(),this->info);
+    t.join();
+    cout<<"thread joined"<<endl;
+
 }
 
 void MyParallelServer::stop() {
     this->info->stopServer = true;
 }
-
- */

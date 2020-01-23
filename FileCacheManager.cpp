@@ -6,13 +6,15 @@
 #include <unordered_map>
 #include <string>
 #include <iostream>
-
+#include <mutex>
 #include "FileCacheManager.h"
 
-
+mutex Mutex_lock_cache;
+mutex Mutex_lock_files;
 void FileCacheManager::saveSolution(string problem, string solution) {
     // not in the cache
-    //string p = getProblemAsString(problem);
+    //lock the cache
+    Mutex_lock_cache.lock();
     if (cache.find(problem) == cache.end()) {
         //remove the last of the list and cache
         if (lru_list.size() == (unsigned int) capacity) {
@@ -33,16 +35,24 @@ void FileCacheManager::saveSolution(string problem, string solution) {
     pair.first = solution;
     pair.second = lru_list.begin();
     cache[problem] = pair;
+    //unlock the cache
+    Mutex_lock_cache.unlock();
+
+    //lock the files
+    Mutex_lock_files.lock();
     //open file
     fstream fp (to_string(hashFunc(problem)) + ".txt",ios::out) ;
     //write to file
     fp.write(solution.c_str(),solution.length());
     fp.close();
+    //unlock the files
+    Mutex_lock_files.unlock();
 }
 
 
 string FileCacheManager::getSolution(string problem) {
-    //string p = getProblemAsString(problem);
+    //lock the cache
+    Mutex_lock_cache.lock();
     if(cache.find(problem) != cache.end()){
         auto pair = cache[problem];
         lru_list.erase(pair.second);
@@ -50,8 +60,15 @@ string FileCacheManager::getSolution(string problem) {
         pair = {pair.first, lru_list.begin()};
         //cache.erase(key);
         cache[problem] = pair;
-        return cache[problem].first;
+        string solution =  cache[problem].first;
+        // unlock the cache
+        Mutex_lock_cache.unlock();
+        return solution;
     } else {
+        //unlock the cache
+        Mutex_lock_cache.unlock();
+        // lock the files
+        Mutex_lock_files.lock();
         fstream fp (to_string(hashFunc(problem)) + ".txt", ios::in);
         if( !fp.is_open()) {
             throw "error";
@@ -63,7 +80,10 @@ string FileCacheManager::getSolution(string problem) {
         }
         //fp.read((char*) &solution,sizeof(obj));
         fp.close();
-
+        // unlock the files
+        Mutex_lock_files.unlock();
+        // lock the cache
+        Mutex_lock_cache.lock();
         if(!lru_list.empty()){
             string last = lru_list.back();
             lru_list.pop_back();
@@ -71,25 +91,24 @@ string FileCacheManager::getSolution(string problem) {
         }
         lru_list.push_front(problem);
         cache[problem] = {solution, lru_list.begin()};
+        //unlock the cache
+        Mutex_lock_cache.unlock();
         return solution;
     }
 }
 bool FileCacheManager::isExist(string problem){
-    //string p = getProblemAsString(problem);
+    bool retval = true;
+    //lock the file
+    Mutex_lock_files.lock();
     fstream fp (to_string(hashFunc(problem)) + ".txt", ios::in);
     if( !fp.is_open()) {
-        return false;
+        retval = false;
     }
     fp.close();
-    return true;
+    // unlock the files
+    Mutex_lock_files.unlock();
+    return retval;
 }
 
-/*string FileCacheManager::getProblemAsString(string problem) {
-    string retval = "";
-    int n;
-    while(!problem.empty()){
-        retval += problem.front();
-        problem.pop_front();
-    }
-}*/
+
 

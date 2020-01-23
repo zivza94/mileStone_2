@@ -65,7 +65,7 @@ void AStar<T>::removeFromClose(State<T>* state,vector<State<T>*> close){
 
 template<typename T>
 string AStar<T>::search(Searchable<T> *s) {
-    int flag = 1;
+    //int flag = 1;
     priority_queue <State<T>*, vector<State<T>*>, DistanceComperator> openQueue;
     vector<State<T>*> closeQueue;
     State<T>* start = s->getInitialState();
@@ -88,24 +88,29 @@ string AStar<T>::search(Searchable<T> *s) {
                 if(v->getCost() <= currentCost){
                     continue;
                 }
+                v->setCost(currentCost);
+                v->setComeFrom(state);
             } else if (isClose(v,closeQueue)){
                 if(v->getCost() <= currentCost){
                     continue;
                 }
                 removeFromClose(v,closeQueue);
+                //flag = 1;
+                v->setCost(currentCost);
+                v->setComeFrom(state);
                 openQueue.push(v);
             } else {
-                flag = 1;
+                //flag = 1;
                 v->setCost(currentCost);
                 v->setComeFrom(state);
                 openQueue.push(v);
             }
-            if(flag == 1) {
+            /*if(flag == 1) {
                 flag = 0;
             } else {
                 v->setCost(currentCost);
                 v->setComeFrom(state);
-            }
+            }*/
         }
 
         closeQueue.push_back(state);
