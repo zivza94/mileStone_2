@@ -28,7 +28,7 @@ string DFS<T>::search(Searchable<T>* s) {
         v = stack.top();
         stack.pop();
         // if we found the end path
-        if (s->isGoalState(*v)) {
+        if (s->isGoalState(v)) {
             return this->getSolution(s, v);
         }
         list<State<T> *> possibleStates = s->getAllPossibleStates(v);

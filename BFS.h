@@ -29,7 +29,7 @@ string BFS<T>::search(Searchable<T>* s) {
         v = queue.front();
         queue.pop_front();
         // if we found the end path
-        if (s->isGoalState(*v)){
+        if (s->isGoalState(v)){
             //impl getSolution(s,v)
             return this->getSolution(s,v);
         }

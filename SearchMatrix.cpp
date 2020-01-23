@@ -3,7 +3,13 @@
 //
 #include "SearchMatrix.h"
 
-
+int SearchMatrix::getHeuristicSearch(State<Cell *> *state) {
+    int retval;
+    int dx = _goalState->getState()->getRow() - state->getState()->getRow();
+    int dy = _goalState->getState()->getCol() - state->getState()->getCol();
+    retval = dx + dy;
+    return retval;
+}
 State<Cell*>* SearchMatrix::getState(State<Cell*>* state,Cell* cell) {
     if (state == NULL){
         state = new State<Cell*>(cell,0);
@@ -23,6 +29,7 @@ vector<pair<Cell*,State<Cell*>*>> SearchMatrix::splitLineToCells(string line, in
 
         Cell* c = new Cell(row, col,stod(line.substr(start, end - start)));
         retval.push_back(pair<Cell*,State<Cell*>*>(c,NULL));
+        retval.back().second->setHeuristic(getHeuristicSearch(retval.back().second));
         start = end + 1;
         end = line.find(',', start);
         col++;
@@ -38,6 +45,29 @@ SearchMatrix::SearchMatrix(string problem) {
     mat.pop_back();
 
 
+    string row;
+    string col;
+    //goalCell = endCell -->> cell
+    //split the string to 2 ints
+    row = endCell.substr(0,endCell.find(','));
+    int endRow = stoi(row);
+    col = endCell.substr(endCell.find(',') + 1);
+    int endCol = stoi(col);
+    Cell* end = _mat.at(endRow).at(endCol).first;
+    _goalState = new State<Cell*>(end,end->getValue());
+    _goalState->setHeuristic(0);
+    _mat.at(endRow).at(endCol).second = _goalState;
+    //initCell = startCell -->> cell
+    //split the string to 2 ints
+    row = startCell.substr(0,startCell.find(','));
+    int startRow = stoi(row);
+    col = startCell.substr(startCell.find(',') + 1);
+    int startCol = stoi(col);
+    Cell* start = _mat.at(startRow).at(startCol).first;
+    _initState = new State<Cell*>(start,start->getValue());
+    _initState->setHeuristic(getHeuristicSearch(_initState));
+    _mat.at(startRow).at(startCol).second = _initState;
+
     //split the mat to cells with cost.
     _size = mat.size();
     int n = 0;
@@ -50,26 +80,9 @@ SearchMatrix::SearchMatrix(string problem) {
         mat.pop_front();
         _mat.push_back(rowList);
     }
-    string row;
-    string col;
-    //initCell = startCell -->> cell
-    //split the string to 2 ints
-    row = startCell.substr(0,startCell.find(','));
-    int startRow = stoi(row);
-    col = startCell.substr(startCell.find(',') + 1);
-    int startCol = stoi(col);
-    Cell* start = _mat.at(startRow).at(startCol).first;
-    _initState = new State<Cell*>(start,start->getValue());
-    _mat.at(startRow).at(startCol).second = _initState;
-    //goalCell = endCell -->> cell
-    //split the string to 2 ints
-    row = endCell.substr(0,endCell.find(','));
-    int endRow = stoi(row);
-    col = endCell.substr(endCell.find(',') + 1);
-    int endCol = stoi(col);
-    Cell* end = _mat.at(endRow).at(endCol).first;
-    _goalState = new State<Cell*>(end,end->getValue());
-    _mat.at(endRow).at(endCol).second = _goalState;
+
+
+
 
 
 
@@ -78,8 +91,8 @@ State<Cell*>* SearchMatrix::getInitialState() {
     return _initState;
 }
 
-bool SearchMatrix::isGoalState(State<Cell*> state) {
-    return *_goalState == state;
+bool SearchMatrix::isGoalState(State<Cell*>* state) {
+    return *_goalState == *state;
 }
 
 
