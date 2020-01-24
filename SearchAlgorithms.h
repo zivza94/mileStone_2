@@ -15,6 +15,8 @@ public:
     virtual string search (Searchable<T>* s) = 0;
     virtual string getSolution(Searchable<T>* s,State<T>* goalState);
     virtual int getEvaluated(){return evaluated;};
+    virtual bool isClose(State<T>* state, vector<State<T>*> close);
+    virtual void removeFromClose(State<T>* state,vector<State<T>*> close);
 
 };
 
@@ -50,5 +52,25 @@ string SearchAlgorithms<T>::getSolution(Searchable<T>* s,State<T>* goalState) {
     return answer;
 }
 
-
+template<typename T>
+bool SearchAlgorithms<T>::isClose(State<T>* state, vector<State<T>*> close){
+    int i;
+    for (i = 0; i<close.size(); i++){
+        if(state == close[i]){
+            return true;
+        }
+    }
+    return false;
+}
+template<typename T>
+void SearchAlgorithms<T>::removeFromClose(State<T>* state,vector<State<T>*> close){
+    typename vector<State<T>*>::iterator it;
+    for (it = close.begin(); it != close.end(); it++){
+        if(*it == state){
+            close.erase(it);
+            return;
+        }
+    }
+    return;
+}
 #endif //MILESTONE_2_SEARCHALGORITHMS_H

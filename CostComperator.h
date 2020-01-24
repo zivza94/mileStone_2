@@ -7,11 +7,11 @@
 
 #include "State.h"
 
-template <typename T>
+
 class CostComperator {
 public:
-    bool operator()(const State<T> a, const State<T> b) {
-        return a.getCost() > b.getCost();
+    bool operator()(State<Cell*>* a, State<Cell*>* b) {
+        return a->getCost() > b->getCost();
     }
 };
 

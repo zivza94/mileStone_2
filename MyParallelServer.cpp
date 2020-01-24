@@ -4,7 +4,7 @@
 
 #include "MyParallelServer.h"
 
-const int seconds_till_time_out = 30;
+const int seconds_till_time_out = 120;
 void* MyParallelServer::acceptClients(void* args) {
     struct acceptInfo1 *info = (acceptInfo1*) args;
     sockaddr_in address;

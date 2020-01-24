@@ -13,8 +13,6 @@ template< typename T>
 class AStar : public SearchAlgorithms<T> {
 private:
     bool isOpen(State<T>* state, priority_queue <State<T>*, vector<State<T>*>, DistanceComperator>);
-    bool isClose(State<T>* state, vector<State<T>*> close);
-    void removeFromClose(State<T>* state,vector<State<T>*> close);
 public:
     string search (Searchable<T>* s) override;
 };
@@ -40,28 +38,6 @@ bool AStar<T>::isOpen(State<T> *state, priority_queue<State<T> *, vector<State<T
     }
     return retval;
 }
-template<typename T>
-bool AStar<T>::isClose(State<T>* state, vector<State<T>*> close){
-    int i;
-    for (i = 0; i<close.size(); i++){
-        if(state == close[i]){
-            return true;
-        }
-    }
-    return false;
-}
-template<typename T>
-void AStar<T>::removeFromClose(State<T>* state,vector<State<T>*> close){
-    typename vector<State<T>*>::iterator it;
-    for (it = close.begin(); it != close.end(); it++){
-        if(*it == state){
-            close.erase(it);
-            return;
-        }
-    }
-    return;
-}
-
 
 template<typename T>
 string AStar<T>::search(Searchable<T> *s) {
@@ -90,11 +66,11 @@ string AStar<T>::search(Searchable<T> *s) {
                 }
                 v->setCost(currentCost);
                 v->setComeFrom(state);
-            } else if (isClose(v,closeQueue)){
+            } else if (this->isClose(v,closeQueue)){
                 if(v->getCost() <= currentCost){
                     continue;
                 }
-                removeFromClose(v,closeQueue);
+                this->removeFromClose(v,closeQueue);
                 //flag = 1;
                 v->setCost(currentCost);
                 v->setComeFrom(state);

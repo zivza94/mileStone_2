@@ -13,6 +13,7 @@ class Searcher {
 public:
     virtual string search (Searchable<T>* s) = 0;
     virtual int getEvaluated() = 0;
+    virtual string getSolution(Searchable<T>* s,State<T>* goalState) = 0;
 
 };
 #endif //MILESTONE_2_SEARCHER_H
