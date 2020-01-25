@@ -24,6 +24,7 @@ private:
     bool isOpen(State<T>* state, priority_queue <State<T>*, vector<State<T>*>, CostComperator> open);
 public:
     string search (Searchable<T>* s) override;
+    virtual ~BestFS(){};
 };
 
 template <typename T>

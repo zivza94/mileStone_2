@@ -71,7 +71,7 @@ void MyParallelServer::open(int port, ClientHandler *clientHandler) {
     this->info->port = port;
     this->info->c = clientHandler;
     // open new thread to acceptClient
-    std:thread t(&MyParallelServer::acceptClients, MyParallelServer(),this->info);
+    thread t(&MyParallelServer::acceptClients, MyParallelServer(),this->info);
     t.join();
 
 }

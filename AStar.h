@@ -15,6 +15,7 @@ private:
     bool isOpen(State<T>* state, priority_queue <State<T>*, vector<State<T>*>, DistanceComperator>);
 public:
     string search (Searchable<T>* s) override;
+    virtual ~AStar(){};
 };
 template<typename T>
 bool AStar<T>::isOpen(State<T> *state, priority_queue<State<T> *, vector<State<T> *>, DistanceComperator> open) {

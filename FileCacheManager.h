@@ -24,6 +24,7 @@ public:
     string getSolution(string problem);
     void saveSolution(string problem,string solution);
     string getProblemAsString(string problem);
+    virtual ~FileCacheManager(){};
 };
 
 

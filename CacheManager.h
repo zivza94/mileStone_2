@@ -14,6 +14,7 @@ public:
     virtual bool isExist(P problem) = 0;
     virtual string getSolution(P problem) = 0;
     virtual void saveSolution(P problem,S solution) = 0;
+    virtual ~CacheManager(){};
 
 };
 #endif //MILESTONE_2_CACHEMANAGER_H

@@ -15,7 +15,7 @@ template <typename T>
 class BFS : public SearchAlgorithms<T> {
 public:
     string search (Searchable<T>* s) override;
-
+    virtual ~BFS(){};
 
 };
 template <typename T>

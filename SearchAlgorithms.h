@@ -17,6 +17,7 @@ public:
     virtual int getEvaluated(){return evaluated;};
     virtual bool isClose(State<T>* state, vector<State<T>*> close);
     virtual void removeFromClose(State<T>* state,vector<State<T>*> close);
+    virtual ~SearchAlgorithms(){};
 
 };
 
