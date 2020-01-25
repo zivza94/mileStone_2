@@ -24,7 +24,7 @@ string BFS<T>::search(Searchable<T>* s) {
     map<State<T>*,bool> visited;
     list<State<T>*> queue;
     queue.push_back(v);
-
+    // while there is still state we didnt visited
     while(!queue.empty()){
         this->evaluated++;
         v = queue.front();
@@ -34,22 +34,24 @@ string BFS<T>::search(Searchable<T>* s) {
             //impl getSolution(s,v)
             return this->getSolution(s,v);
         }
-        //typename list<State<T>*>::iterator it;
+        //get all the possible states
         list<State<T>*> possibleStates = s->getAllPossibleStates(v);
         while(!possibleStates.empty()){
             State<T>* state = possibleStates.front();
             possibleStates.pop_front();
             bool visit = !(visited.find(state) == visited.end());
+            //if we didnt visited the cell
             if (!visit){
 
                 queue.push_back(state);
-                //visited.insert(std::pair<T,bool>(stateT,true));
                 visited[state] = true;
                 state->setComeFrom(v);
                 state->setCost(v->getCost() + state->getState()->getValue());
             }
         }
     }
+    // no path found
+    return "no path to goal state";
 }
 
 #endif //MILESTONE_2_BFS_H

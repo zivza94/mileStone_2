@@ -45,6 +45,7 @@ string DFS<T>::search(Searchable<T>* s) {
             }
         }
     }
+    return "no path to goal state";
 }
 
 

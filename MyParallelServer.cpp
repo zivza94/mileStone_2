@@ -6,6 +6,7 @@
 
 const int seconds_till_time_out = 120;
 void* MyParallelServer::acceptClients(void* args) {
+    //cout<<"start thread"<< this_thread::get_id()<<endl;
     struct acceptInfo1 *info = (acceptInfo1*) args;
     sockaddr_in address;
     //create socket
@@ -57,20 +58,21 @@ void* MyParallelServer::acceptClients(void* args) {
             }
         }
         // handle the discussion with the client - send/recv
+        // open new thread for client handler and continue to accept clients
         std::thread clientThread(&ClientHandler::handleClient,info->c,clientSocket);
         clientThread.detach();
-        //clientThread.join();
-        //cout<<"thread joined"<<endl;
-        //info->c->handleClient(clientSocket);
+
     }
+    //cout<<"end of thread"<< this_thread::get_id()<<endl;
+
 }
 void MyParallelServer::open(int port, ClientHandler *clientHandler) {
     // add the parameters for sending to the out side function accept
     this->info->port = port;
     this->info->c = clientHandler;
+    // open new thread to acceptClient
     std:thread t(&MyParallelServer::acceptClients, MyParallelServer(),this->info);
     t.join();
-    cout<<"thread joined"<<endl;
 
 }
 

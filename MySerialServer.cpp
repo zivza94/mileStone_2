@@ -65,10 +65,12 @@ void MySerialServer::open(int port, ClientHandler *clientHandler) {
     // add the parameters for sending to the out side function accept
     this->info->port = port;
     this->info->c = clientHandler;
+    // open the accept function in new thread
     pthread_t t;
     pthread_create(&t, nullptr, accept, this->info);
     //pthread_detach(t);
     void *status;
+    // wait for the accept to finish
     pthread_join(t, &status);
 }
 

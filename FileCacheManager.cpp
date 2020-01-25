@@ -100,10 +100,12 @@ bool FileCacheManager::isExist(string problem){
     bool retval = true;
     //lock the file
     Mutex_lock_files.lock();
+    //search if there is file for the problem
     fstream fp (to_string(hashFunc(problem)) + ".txt", ios::in);
     if( !fp.is_open()) {
         retval = false;
     }
+    // close the file
     fp.close();
     // unlock the files
     Mutex_lock_files.unlock();

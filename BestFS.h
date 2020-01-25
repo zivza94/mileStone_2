@@ -61,6 +61,8 @@ string BestFS<T>::search(Searchable<T>* s) {
         }
        // showpq(open);
     }
+    //no path found
+    return "no path to goal state";
 }
 
 template<typename T>
